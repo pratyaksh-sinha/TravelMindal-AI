@@ -1,5 +1,4 @@
-# TravelMindal-AI
-AI-powered multilingual travel planner with social features, powered by OpenAI.
+
 # TravelMindal AI 🌍✈️
 
 **An AI-Powered Travel Planner**  
@@ -56,7 +55,8 @@ All API keys are hidden using `.env`. Please refer to the `LICENSE` for terms of
 - Home page  
 - Travel plan output  
 - Multilingual input example  
-- Mobile view
+
+<img width="1440" height="900" alt="Screenshot 2025-03-29 at 20 49 58 19 56 05" src="https://github.com/user-attachments/assets/c45fdc84-0236-44a5-a538-50934e7661eb" />
 
 ---
 
