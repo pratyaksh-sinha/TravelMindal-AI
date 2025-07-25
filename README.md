@@ -57,6 +57,11 @@ All API keys are hidden using `.env`. Please refer to the `LICENSE` for terms of
 - Multilingual input example  
 
 <img width="1440" height="900" alt="Screenshot 2025-03-29 at 20 49 58 19 56 05" src="https://github.com/user-attachments/assets/c45fdc84-0236-44a5-a538-50934e7661eb" />
+<img width="1440" height="900" alt="Screenshot 2025-03-29 at 20 50 01 19 56 05" src="https://github.com/user-attachments/assets/90de247b-0b88-471e-aa73-95c63e0719a0" />
+<img width="1440" height="900" alt="Screenshot 2025-03-29 at 20 50 04 19 56 05" src="https://github.com/user-attachments/assets/b916213e-59e8-47dd-9681-6565891f9580" />
+<img width="1440" height="900" alt="Screenshot 2025-03-29 at 20 50 17 19 56 05" src="https://github.com/user-attachments/assets/33aab132-ac5d-4567-9808-84f28d70d9c2" />
+<img width="1440" height="900" alt="Screenshot 2025-03-29 at 20 50 19 19 56 05" src="https://github.com/user-attachments/assets/87a1916c-2637-4e23-bbfa-cb487c1f2be6" />
+<img width="1440" height="900" alt="Screenshot 2025-03-29 at 20 50 24 19 56 05" src="https://github.com/user-attachments/assets/f5f90933-f3ca-46a1-b466-185b606f896d" />
 
 ---
 
