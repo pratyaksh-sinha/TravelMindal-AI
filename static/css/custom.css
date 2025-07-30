@@ -1,0 +1,233 @@
+/* TravelMindal AI - Custom Styles */
+
+/* General Styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Step indicators for Home page */
+.step-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Avatar styling */
+.avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+/* Chat interface styling */
+.chat-message {
+    max-width: 100%;
+}
+
+.chat-avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.message-content {
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message .message-content {
+    background-color: var(--bs-primary);
+}
+
+.ai-message .message-content {
+    background-color: var(--bs-dark);
+    border: 1px solid var(--bs-secondary);
+}
+
+/* Typing indicator animation */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.typing-indicator span {
+    height: 8px;
+    width: 8px;
+    background: var(--bs-light);
+    border-radius: 50%;
+    display: block;
+    margin: 0 3px;
+    opacity: 0.4;
+}
+
+.typing-indicator span:nth-of-type(1) {
+    animation: typing 1s infinite;
+}
+
+.typing-indicator span:nth-of-type(2) {
+    animation: typing 1s 0.33s infinite;
+}
+
+.typing-indicator span:nth-of-type(3) {
+    animation: typing 1s 0.66s infinite;
+}
+
+@keyframes typing {
+    0% {
+        opacity: 0.4;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+    100% {
+        opacity: 0.4;
+        transform: translateY(0);
+    }
+}
+
+/* Timeline styling for itinerary */
+.timeline {
+    position: relative;
+    padding: 1rem;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 2.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item-marker {
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: var(--bs-primary);
+    z-index: 1;
+}
+
+.timeline-item:not(:last-child) .timeline-item-marker::after {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 1rem;
+    bottom: -1.5rem;
+    width: 2px;
+    margin-left: -1px;
+    background-color: var(--bs-secondary);
+    z-index: 0;
+}
+
+/* Transport booking timeline */
+.time-bar {
+    width: 80px;
+    text-align: center;
+}
+
+.time-bar .line {
+    height: 2px;
+    background-color: var(--bs-secondary);
+    margin: 10px 0;
+    position: relative;
+}
+
+.time-bar .line:before,
+.time-bar .line:after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: var(--bs-secondary);
+    border-radius: 50%;
+    top: -2px;
+}
+
+.time-bar .line:before {
+    left: 0;
+}
+
+.time-bar .line:after {
+    right: 0;
+}
+
+/* Success icon styles */
+.success-icon {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgba(25, 135, 84, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Comment styling */
+.comment-content {
+    max-width: calc(100% - 40px);
+    word-wrap: break-word;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .timeline-item {
+        padding-left: 2rem;
+    }
+    
+    .message-content {
+        max-width: 90%;
+    }
+    
+    .time-bar {
+        width: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+}

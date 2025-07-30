@@ -1,0 +1,724 @@
+{% extends 'base.html' %}
+
+{% block title %}Trip Planner{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card bg-dark mb-4">
+                <div class="card-body p-4">
+                    <h2 class="mb-4"><i class="fas fa-map-marked-alt me-2"></i>Budget-Based Trip Planner</h2>
+                    <p class="lead">Tell us your budget and destination, and we'll create a custom itinerary tailored just for you!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-5">
+            <!-- Trip Planning Form -->
+            <div class="card bg-dark mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Plan Your Trip</h5>
+                </div>
+                <div class="card-body">
+                    <form id="itinerary-form">
+                        <div class="mb-3">
+                            <label for="destination" class="form-label">Destination</label>
+                            <input type="text" class="form-control" id="destination" placeholder="Where do you want to go?" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="budget" class="form-label">Budget (₹)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" class="form-control" id="budget" placeholder="How much can you spend?" min="500" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Duration (days)</label>
+                            <input type="number" class="form-control" id="duration" value="1" min="1" max="14">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Interests (optional)</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input interest-check" type="checkbox" value="history" id="interest-history">
+                                        <label class="form-check-label" for="interest-history">History & Culture</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input interest-check" type="checkbox" value="food" id="interest-food">
+                                        <label class="form-check-label" for="interest-food">Food & Cuisine</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input interest-check" type="checkbox" value="nature" id="interest-nature">
+                                        <label class="form-check-label" for="interest-nature">Nature & Outdoors</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input interest-check" type="checkbox" value="adventure" id="interest-adventure">
+                                        <label class="form-check-label" for="interest-adventure">Adventure</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input interest-check" type="checkbox" value="shopping" id="interest-shopping">
+                                        <label class="form-check-label" for="interest-shopping">Shopping</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input interest-check" type="checkbox" value="nightlife" id="interest-nightlife">
+                                        <label class="form-check-label" for="interest-nightlife">Nightlife</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" id="generate-btn">
+                                <i class="fas fa-magic me-2"></i>Generate Itinerary
+                            </button>
+                            <button type="button" class="btn btn-outline-light" id="quick-recommendation-btn">
+                                <i class="fas fa-bolt me-2"></i>Quick Recommendations
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Recently Saved Itineraries -->
+            <div class="card bg-dark mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Saved Itineraries</h5>
+                    <span class="badge bg-primary" id="saved-count">0</span>
+                </div>
+                <div class="card-body p-0">
+                    <div id="saved-itineraries" class="list-group list-group-flush">
+                        <div class="text-center py-4 text-muted" id="no-itineraries">
+                            <i class="fas fa-route fa-2x mb-2"></i>
+                            <p>No saved itineraries yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-7">
+            <!-- Itinerary Results -->
+            <div class="card bg-dark mb-4" id="itinerary-results">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Your Travel Plan</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-light me-2" id="save-btn" style="display: none;">
+                            <i class="fas fa-save me-1"></i> Save
+                        </button>
+                        <button class="btn btn-sm btn-outline-light" id="share-btn" style="display: none;">
+                            <i class="fas fa-share-alt me-1"></i> Share
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body" id="results-content">
+                    <div class="text-center py-5">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik01MCAwQzc3LjYxNDIgMCAxMDAgMjIuMzg1OCAxMDAgNTBDMTAwIDc3LjYxNDIgNzcuNjE0MiAxMDAgNTAgMTAwQzIyLjM4NTggMTAwIDAgNzcuNjE0MiAwIDUwQzAgMjIuMzg1OCAyMi4zODU4IDAgNTAgMFpNNTAgMTBDNzIuMDkxNCAxMCA5MCAyNy45MDg2IDkwIDUwQzkwIDcyLjA5MTQgNzIuMDkxNCA5MCA1MCA5MEMyNy45MDg2IDkwIDEwIDcyLjA5MTQgMTAgNTBDMTAgMjcuOTA4NiAyNy45MDg2IDEwIDUwIDEwWk01NS4zMDM0IDQ0LjY5NjZMNjAgNTBMNTUuMzAzNCA1NS4zMDM0QzU0LjAwNDkgNTYuNjAxOSA1MS45OTUxIDU2LjYwMTkgNTAuNjk2NiA1NS4zMDM0QzQ5LjM5OCA1NC4wMDQ5IDQ5LjM5OCA1MS45OTUxIDUwLjY5NjYgNTAuNjk2Nkw1NSA0Nkw1MC42OTY2IDQxLjY5NjZDNDkuMzk4IDQwLjM5OCA0OS4zOTggMzguMzg4MyA1MC42OTY2IDM3LjA4OThDNTEuOTk1MSAzNS43OTEzIDU0LjAwNDkgMzUuNzkxMyA1NS4zMDM0IDM3LjA4OThMNjAgNDJMNjQuNjk2NiAzNy4zMDM0QzY1Ljk5NTEgMzYuMDA0OSA2OC4wMDQ5IDM2LjAwNDkgNjkuMzAzNCAzNy4zMDM0QzcwLjYwMiAzOC42MDIgNzAuNjAyIDQwLjYxMTcgNjkuMzAzNCA0MS45MUw2NSA0Nkw2OS4zMDM0IDUwLjMwMzRDNzAuNjAyIDUxLjYwMiA3MC42MDIgNTMuNjExNyA2OS4zMDM0IDU0LjkxMDJDNjguMDA0OSA1Ni4yMDg3IDY1Ljk5NTEgNTYuMjA4NyA2NC42OTY2IDU0LjkxMDJMNjAgNTBMNTUuMzAzNCA0NC42OTY2Wk00OS4zMDM0IDQ0LjY5NjZMNDUgNDlMNDAuNjk2NiA0NC42OTY2QzM5LjM5OCA0My4zOTggMzkuMzk4IDQxLjM4ODMgNDAuNjk2NiA0MC4wODk4QzQxLjk5NTEgMzguNzkxMyA0NC4wMDQ5IDM4Ljc5MTMgNDUuMzAzNCA0MC4wODk4TDQ5LjMwMzQgNDQuNjk2NlpNMzUuMzAzNCA1NC42OTY2TDMwIDYwTDM1LjMwMzQgNjUuMzAzNEMzNi42MDIgNjYuNjAyIDM2LjYwMiA2OC42MTE3IDM1LjMwMzQgNjkuOTEwMkMzNC4wMDQ5IDcxLjIwODcgMzEuOTk1MSA3MS4yMDg3IDMwLjY5NjYgNjkuOTEwMkwyNSA2NEwyMC42OTY2IDY4LjMwMzRDMTkuMzk4IDY5LjYwMiAxNy4zODgzIDY5LjYwMiAxNi4wODk4IDY4LjMwMzRDMTQuNzkxMyA2Ny4wMDQ5IDE0Ljc5MTMgNjQuOTk1MSAxNi4wODk4IDYzLjY5NjZMMjAgNjBMMTYuMDg5OCA1Ni4wODk4QzE0Ljc5MTMgNTQuNzkxMyAxNC43OTEzIDUyLjc4MTUgMTYuMDg5OCA1MS40ODNDMTcuMzg4MyA1MC4xODQ1IDE5LjM5OCA1MC4xODQ1IDIwLjY5NjYgNTEuNDgzTDI1IDU1Ljc4NjZMMzAgNTAuNzg2NkMzMS4yOTg1IDQ5LjQ4ODEgMzMuMzA4MyA0OS40ODgxIDM0LjYwNjggNTAuNzg2NkMzNS45MDUzIDUyLjA4NTEgMzUuOTA1MyA1NC4wOTQ5IDM0LjYwNjggNTUuMzkzNEwzNS4zMDM0IDU0LjY5NjZaIiBmaWxsPSIjODA4MDgwIi8+Cjwvc3ZnPgo=" 
+                             alt="Itinerary" class="mb-3" style="width: 100px;">
+                        <h4 class="text-muted">Generate an itinerary to get started</h4>
+                        <p class="text-muted">Fill out the form and click "Generate Itinerary" to create your personalized travel plan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75" style="display: none !important; z-index: 9999;">
+    <div class="text-center">
+        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5 class="text-white">Creating your perfect itinerary...</h5>
+        <p class="text-white-50">This may take a few moments</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM elements
+    const itineraryForm = document.getElementById('itinerary-form');
+    const generateBtn = document.getElementById('generate-btn');
+    const quickRecommendationBtn = document.getElementById('quick-recommendation-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const shareBtn = document.getElementById('share-btn');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const resultsContent = document.getElementById('results-content');
+    const savedItineraries = document.getElementById('saved-itineraries');
+    const noItineraries = document.getElementById('no-itineraries');
+    const savedCount = document.getElementById('saved-count');
+    
+    // Current itinerary data
+    let currentItinerary = null;
+    
+    // Function to show loading overlay
+    function showLoading() {
+        loadingOverlay.style.display = 'flex';
+    }
+    
+    // Function to hide loading overlay
+    function hideLoading() {
+        loadingOverlay.style.display = 'none';
+    }
+    
+    // Function to generate itinerary
+    function generateItinerary(event) {
+        event.preventDefault();
+        
+        const destination = document.getElementById('destination').value;
+        const budget = document.getElementById('budget').value;
+        const duration = document.getElementById('duration').value;
+        
+        // Get selected interests
+        const interests = [];
+        document.querySelectorAll('.interest-check:checked').forEach(checkbox => {
+            interests.push(checkbox.value);
+        });
+        
+        if (!destination || !budget) {
+            alert('Please fill in the destination and budget fields.');
+            return;
+        }
+        
+        // Show loading overlay
+        showLoading();
+        
+        // Prepare request data
+        const requestData = {
+            location: destination,
+            budget: parseFloat(budget),
+            duration: parseInt(duration),
+            interests: interests
+        };
+        
+        // Make API request
+        fetch('/itinerary/plan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading overlay
+            hideLoading();
+            
+            // Store the current itinerary
+            currentItinerary = data;
+            
+            // Display the itinerary
+            displayItinerary(data);
+            
+            // Show save and share buttons
+            saveBtn.style.display = 'inline-block';
+            shareBtn.style.display = 'inline-block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            hideLoading();
+            resultsContent.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Sorry, there was an error generating your itinerary. Please try again later.
+                </div>
+            `;
+        });
+    }
+    
+    // Function to get quick recommendations
+    function getQuickRecommendations() {
+        const destination = document.getElementById('destination').value;
+        const budget = document.getElementById('budget').value;
+        
+        if (!destination || !budget) {
+            alert('Please fill in the destination and budget fields.');
+            return;
+        }
+        
+        // Show loading overlay
+        showLoading();
+        
+        // Create a query from the destination and budget
+        const query = `What can I do in ${destination} with a budget of ₹${budget}?`;
+        
+        // Prepare request data
+        const requestData = {
+            query: query,
+            budget: parseFloat(budget),
+            location: destination
+        };
+        
+        // Make API request
+        fetch('/itinerary/recommendations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading overlay
+            hideLoading();
+            
+            // Display the recommendations
+            displayRecommendations(data, destination, budget);
+            
+            // Show buttons
+            saveBtn.style.display = 'inline-block';
+            shareBtn.style.display = 'inline-block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            hideLoading();
+            resultsContent.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Sorry, there was an error getting recommendations. Please try again later.
+                </div>
+            `;
+        });
+    }
+    
+    // Function to display itinerary
+    function displayItinerary(data) {
+        if (data.error) {
+            resultsContent.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    ${data.error}: ${data.details || ''}
+                </div>
+            `;
+            return;
+        }
+        
+        // Build HTML for the itinerary
+        let html = `
+            <div class="itinerary-header mb-4">
+                <h3>${data.destination}</h3>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="budget-info">
+                        <span class="badge bg-success fs-6 me-2">₹${data.budget_summary.total}</span>
+                        <span class="text-muted">Total Budget</span>
+                    </div>
+                    <div class="duration-info">
+                        <span class="badge bg-info fs-6">${data.days.length} Day${data.days.length > 1 ? 's' : ''}</span>
+                    </div>
+                </div>
+                
+                <div class="budget-breakdown mb-4">
+                    <h5>Budget Breakdown</h5>
+                    <div class="progress mb-2" style="height: 20px;">
+                        <div class="progress-bar bg-success" style="width: ${(data.budget_summary.accommodation / data.budget_summary.total) * 100}%" title="Accommodation: ₹${data.budget_summary.accommodation}">
+                            Accommodation
+                        </div>
+                        <div class="progress-bar bg-primary" style="width: ${(data.budget_summary.food / data.budget_summary.total) * 100}%" title="Food: ₹${data.budget_summary.food}">
+                            Food
+                        </div>
+                        <div class="progress-bar bg-info" style="width: ${(data.budget_summary.activities / data.budget_summary.total) * 100}%" title="Activities: ₹${data.budget_summary.activities}">
+                            Activities
+                        </div>
+                        <div class="progress-bar bg-warning" style="width: ${(data.budget_summary.transportation / data.budget_summary.total) * 100}%" title="Transportation: ₹${data.budget_summary.transportation}">
+                            Transport
+                        </div>
+                        <div class="progress-bar bg-secondary" style="width: ${(data.budget_summary.other / data.budget_summary.total) * 100}%" title="Other: ₹${data.budget_summary.other}">
+                            Other
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-between small text-muted">
+                        <span>Accommodation: ₹${data.budget_summary.accommodation}</span>
+                        <span>Food: ₹${data.budget_summary.food}</span>
+                        <span>Activities: ₹${data.budget_summary.activities}</span>
+                        <span>Transport: ₹${data.budget_summary.transportation}</span>
+                        <span>Other: ₹${data.budget_summary.other}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="day-itineraries">
+                <ul class="nav nav-tabs mb-3" id="itineraryTab" role="tablist">
+        `;
+        
+        // Create tabs for each day
+        data.days.forEach((day, index) => {
+            html += `
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link ${index === 0 ? 'active' : ''}" 
+                            id="day${index+1}-tab" 
+                            data-bs-toggle="tab" 
+                            data-bs-target="#day${index+1}" 
+                            type="button" 
+                            role="tab" 
+                            aria-controls="day${index+1}" 
+                            aria-selected="${index === 0 ? 'true' : 'false'}">
+                        Day ${day.day}
+                    </button>
+                </li>
+            `;
+        });
+        
+        html += `
+                </ul>
+                <div class="tab-content" id="itineraryTabContent">
+        `;
+        
+        // Create content for each day tab
+        data.days.forEach((day, index) => {
+            html += `
+                <div class="tab-pane fade ${index === 0 ? 'show active' : ''}" id="day${index+1}" role="tabpanel" aria-labelledby="day${index+1}-tab">
+                    <div class="card bg-dark mb-3">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Day ${day.day} - ${day.date || ''}</h5>
+                            <span class="badge bg-primary">₹${day.total_day_cost}</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="timeline">
+            `;
+            
+            // Add activities to the timeline
+            day.activities.forEach(activity => {
+                html += `
+                    <div class="timeline-item">
+                        <div class="timeline-item-marker"></div>
+                        <div class="timeline-item-content">
+                            <div class="card bg-dark border mb-0">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title">${activity.time} - ${activity.name}</h6>
+                                        <span class="badge bg-info">₹${activity.cost}</span>
+                                    </div>
+                                    <p class="card-text">${activity.description}</p>
+                                    <div class="d-flex justify-content-between text-muted small">
+                                        <span><i class="fas fa-map-marker-alt me-1"></i>${activity.location}</span>
+                                        <span><i class="fas fa-clock me-1"></i>${activity.duration}</span>
+                                    </div>
+                                    ${activity.transportation ? `<div class="mt-2 text-muted small"><i class="fas fa-bus me-1"></i>Transportation: ${activity.transportation}</div>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Add meals to the timeline
+            day.meals.forEach(meal => {
+                html += `
+                    <div class="timeline-item">
+                        <div class="timeline-item-marker"></div>
+                        <div class="timeline-item-content">
+                            <div class="card bg-dark border mb-0">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title">${meal.type}</h6>
+                                        <span class="badge bg-success">₹${meal.cost}</span>
+                                    </div>
+                                    <p class="card-text">${meal.suggestion}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += `
+                </div>
+            </div>
+            
+            <div class="travel-tips mt-4">
+                <h5>Travel Tips</h5>
+                <ul class="list-group">
+        `;
+        
+        // Add tips
+        data.tips.forEach(tip => {
+            html += `
+                <li class="list-group-item bg-dark">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>${tip}
+                </li>
+            `;
+        });
+        
+        html += `
+                </ul>
+            </div>
+        `;
+        
+        // Update the content
+        resultsContent.innerHTML = html;
+    }
+    
+    // Function to display recommendations
+    function displayRecommendations(data, destination, budget) {
+        if (data.error) {
+            resultsContent.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    ${data.error}: ${data.details || ''}
+                </div>
+            `;
+            return;
+        }
+        
+        // Build HTML for the recommendations
+        let html = `
+            <div class="recommendation-header mb-4">
+                <h3>Quick Guide to ${destination}</h3>
+                <div class="d-flex align-items-center mb-3">
+                    <span class="badge bg-success fs-6 me-2">₹${budget}</span>
+                    <span class="text-muted">Budget</span>
+                </div>
+                <div class="summary-box p-3 bg-dark border rounded mb-4">
+                    <h5><i class="fas fa-info-circle me-2"></i>Overview</h5>
+                    <p>${data.summary}</p>
+                </div>
+            </div>
+            
+            <div class="recommended-activities mb-4">
+                <h5><i class="fas fa-list me-2"></i>Recommended Activities</h5>
+                <div class="row">
+        `;
+        
+        // Add activities
+        data.activities.forEach(activity => {
+            html += `
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 bg-dark border">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="card-title">${activity.name}</h6>
+                                <span class="badge bg-info">${activity.cost}</span>
+                            </div>
+                            <p class="card-text">${activity.description}</p>
+                            <div class="text-muted small">
+                                <i class="fas fa-map-marker-alt me-1"></i>${activity.location}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += `
+                </div>
+            </div>
+            
+            <div class="budget-tips mb-4">
+                <h5><i class="fas fa-piggy-bank me-2"></i>Budget Tips</h5>
+                <ul class="list-group">
+        `;
+        
+        // Add tips
+        data.tips.forEach(tip => {
+            html += `
+                <li class="list-group-item bg-dark">
+                    <i class="fas fa-check text-success me-2"></i>${tip}
+                </li>
+            `;
+        });
+        
+        html += `
+                </ul>
+            </div>
+            
+            <div class="time-allocation mt-4">
+                <h5><i class="fas fa-clock me-2"></i>Suggested Time Allocation</h5>
+                <div class="p-3 bg-dark border rounded">
+                    <p>${data.time_allocation}</p>
+                </div>
+            </div>
+        `;
+        
+        // Update the content
+        resultsContent.innerHTML = html;
+    }
+    
+    // Function to save itinerary
+    function saveItinerary() {
+        if (!currentItinerary) return;
+        
+        // In a real app, this would make an API call to save the itinerary
+        // For demo purposes, we'll just store it in localStorage
+        
+        const savedItineraries = JSON.parse(localStorage.getItem('savedItineraries') || '[]');
+        
+        // Create a simplified version for saving
+        const itineraryToSave = {
+            id: Date.now(), // Use timestamp as ID
+            title: currentItinerary.destination,
+            location: currentItinerary.destination,
+            budget: currentItinerary.budget_summary.total,
+            duration: currentItinerary.days.length,
+            date: new Date().toISOString()
+        };
+        
+        savedItineraries.push(itineraryToSave);
+        localStorage.setItem('savedItineraries', JSON.stringify(savedItineraries));
+        
+        // Update the saved itineraries list
+        updateSavedItineraries();
+        
+        // Show confirmation
+        alert('Itinerary saved successfully!');
+    }
+    
+    // Function to share itinerary
+    function shareItinerary() {
+        if (!currentItinerary) return;
+        
+        // In a real app, this would generate a shareable link
+        // For demo purposes, we'll just show an alert
+        
+        alert('Share functionality would be implemented here with a unique URL to share your itinerary.');
+    }
+    
+    // Function to update saved itineraries list
+    function updateSavedItineraries() {
+        const savedItinerariesData = JSON.parse(localStorage.getItem('savedItineraries') || '[]');
+        
+        // Update counter
+        savedCount.textContent = savedItinerariesData.length;
+        
+        // Clear current list
+        while (savedItineraries.firstChild) {
+            savedItineraries.removeChild(savedItineraries.firstChild);
+        }
+        
+        // Show/hide no itineraries message
+        if (savedItinerariesData.length === 0) {
+            savedItineraries.appendChild(noItineraries);
+            return;
+        }
+        
+        // Add each itinerary to the list
+        savedItinerariesData.forEach(itinerary => {
+            const item = document.createElement('a');
+            item.href = '#';
+            item.className = 'list-group-item list-group-item-action bg-dark';
+            item.dataset.id = itinerary.id;
+            
+            const date = new Date(itinerary.date);
+            const formattedDate = date.toLocaleDateString();
+            
+            item.innerHTML = `
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">${itinerary.title}</h6>
+                    <small class="text-muted">${formattedDate}</small>
+                </div>
+                <p class="mb-1 small">${itinerary.duration} day(s) · ₹${itinerary.budget}</p>
+            `;
+            
+            // Add click event to load this itinerary
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                // In a real app, this would load the itinerary from the server
+                alert(`Loading saved itinerary: ${itinerary.title}`);
+            });
+            
+            savedItineraries.appendChild(item);
+        });
+    }
+    
+    // Event Listeners
+    
+    // Generate itinerary on form submit
+    itineraryForm.addEventListener('submit', generateItinerary);
+    
+    // Get quick recommendations
+    quickRecommendationBtn.addEventListener('click', getQuickRecommendations);
+    
+    // Save button
+    saveBtn.addEventListener('click', saveItinerary);
+    
+    // Share button
+    shareBtn.addEventListener('click', shareItinerary);
+    
+    // Initialize saved itineraries list
+    updateSavedItineraries();
+});
+</script>
+
+<style>
+/* Timeline styling */
+.timeline {
+    position: relative;
+    padding: 1rem;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 2.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item-marker {
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: var(--bs-primary);
+    z-index: 1;
+}
+
+.timeline-item:not(:last-child) .timeline-item-marker::after {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 1rem;
+    bottom: -1.5rem;
+    width: 2px;
+    margin-left: -1px;
+    background-color: var(--bs-secondary);
+    z-index: 0;
+}
+
+/* Step circles in home page */
+.step-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Avatar styling */
+.avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+</style>
+{% endblock %}

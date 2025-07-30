@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <section class="py-5 text-center">
+        <div class="py-lg-5">
+            <h1 class="display-3 fw-bold text-white mb-3">Plan Travel Adventures with AI</h1>
+            <p class="lead mb-4">TravelMindal AI is your intelligent travel companion that creates personalized itineraries based on your budget and preferences.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+                <a href="{{ url_for('chatbot.chat_page') }}" class="btn btn-primary btn-lg px-4 me-sm-3">Try the AI Chatbot</a>
+                <a href="{{ url_for('itinerary.itinerary_page') }}" class="btn btn-outline-light btn-lg px-4">Plan a Trip</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-dark rounded-3 p-4 mb-5">
+        <h2 class="text-center mb-5">What Can TravelMindal AI Do For You?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card bg-dark h-100 border-primary">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                            <i class="fas fa-robot fa-2x p-3"></i>
+                        </div>
+                        <h3 class="card-title">AI Travel Assistant</h3>
+                        <p class="card-text">Chat with our AI assistant to get personalized travel recommendations and answers to your travel questions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark h-100 border-success">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-success bg-gradient text-white rounded-circle mb-3">
+                            <i class="fas fa-money-bill-wave fa-2x p-3"></i>
+                        </div>
+                        <h3 class="card-title">Budget-Based Planning</h3>
+                        <p class="card-text">Tell us your budget and location, and we'll suggest the best experiences tailored to your financial constraints.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark h-100 border-info">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-info bg-gradient text-white rounded-circle mb-3">
+                            <i class="fas fa-map-marked-alt fa-2x p-3"></i>
+                        </div>
+                        <h3 class="card-title">Complete Itineraries</h3>
+                        <p class="card-text">Get detailed day-by-day travel plans with activities, accommodations, and transportation recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-5 mb-5">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-5">
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="step-circle bg-primary mb-3">1</div>
+                    <h4>Share Your Budget</h4>
+                    <p>Tell us how much you want to spend on your travel adventure.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="step-circle bg-primary mb-3">2</div>
+                    <h4>Specify Location</h4>
+                    <p>Let us know where you're traveling to or from.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="step-circle bg-primary mb-3">3</div>
+                    <h4>Get Recommendations</h4>
+                    <p>Our AI generates personalized travel suggestions.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="step-circle bg-primary mb-3">4</div>
+                    <h4>Book & Enjoy</h4>
+                    <p>Book your trip and experience your perfect travel adventure.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Try It Now Section -->
+    <section class="py-5 bg-dark rounded-3 p-5 text-center mb-5">
+        <h2 class="mb-4">Try TravelMindal AI Right Now</h2>
+        <p class="lead mb-4">Ask a simple travel question and see how our AI can help you plan your next adventure.</p>
+        <form id="quick-query-form" class="mb-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group mb-3">
+                        <input type="text" id="quick-query" class="form-control form-control-lg" placeholder="E.g., I have ₹2,000 in Mumbai, what can I do?" required>
+                        <button class="btn btn-primary" type="submit" id="submit-query">
+                            <i class="fas fa-paper-plane me-2"></i>Ask AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div id="quick-response" class="card bg-dark d-none mt-4">
+            <div class="card-body">
+                <h5 class="card-title">AI Recommendation</h5>
+                <div id="response-content" class="card-text text-start"></div>
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('chatbot.chat_page') }}" class="btn btn-outline-light">Continue the Conversation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5 mb-5">
+        <h2 class="text-center mb-5">What Our Users Say</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">"TravelMindal AI helped me plan an amazing weekend in Goa with just ₹5,000. The recommendations were perfect for my budget and I had an unforgettable experience!"</p>
+                    </div>
+                    <div class="card-footer bg-dark border-top-0">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar bg-primary text-white rounded-circle me-3">RP</div>
+                            <div>
+                                <h5 class="mb-0">Rahul Patel</h5>
+                                <small class="text-muted">Mumbai, India</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">"As a budget traveler, I was amazed at how TravelMindal AI created a 5-day Delhi itinerary within my tight budget. Every suggestion was practical and enjoyable!"</p>
+                    </div>
+                    <div class="card-footer bg-dark border-top-0">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar bg-success text-white rounded-circle me-3">AS</div>
+                            <div>
+                                <h5 class="mb-0">Ananya Singh</h5>
+                                <small class="text-muted">Bangalore, India</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">"The AI chatbot understood exactly what I was looking for in Jaipur. It recommended hidden gems that weren't in any of the guidebooks I read. Truly impressed!"</p>
+                    </div>
+                    <div class="card-footer bg-dark border-top-0">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar bg-info text-white rounded-circle me-3">VK</div>
+                            <div>
+                                <h5 class="mb-0">Vivek Kumar</h5>
+                                <small class="text-muted">Chennai, India</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const quickQueryForm = document.getElementById('quick-query-form');
+    const quickResponse = document.getElementById('quick-response');
+    const responseContent = document.getElementById('response-content');
+    const submitButton = document.getElementById('submit-query');
+    
+    quickQueryForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const query = document.getElementById('quick-query').value;
+        if (!query) return;
+        
+        // Show loading state
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+        
+        // Make API request
+        fetch('/chatbot/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: query }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Display the response
+            quickResponse.classList.remove('d-none');
+            responseContent.innerHTML = formatResponse(data.response);
+            
+            // Reset the form
+            submitButton.disabled = false;
+            submitButton.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Ask AI';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            responseContent.innerHTML = '<div class="alert alert-danger">Sorry, there was an error processing your request. Please try again later.</div>';
+            quickResponse.classList.remove('d-none');
+            
+            // Reset the button
+            submitButton.disabled = false;
+            submitButton.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Ask AI';
+        });
+    });
+    
+    // Function to format the response with some basic markdown-like processing
+    function formatResponse(text) {
+        if (!text) return '';
+        
+        // Replace newlines with <br> tags
+        text = text.replace(/\n/g, '<br>');
+        
+        // Bold text between ** markers
+        text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Italic text between * markers
+        text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        return text;
+    }
+});
+</script>
+{% endblock %}

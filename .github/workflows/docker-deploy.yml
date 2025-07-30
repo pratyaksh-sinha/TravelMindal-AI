@@ -1,0 +1,25 @@
+name: Docker Build & Push
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to DockerHub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build and Push Docker image
+      run: |
+        docker build -t pratyakshsinha172002/travelmindalai .
+        docker tag pratyakshsinha172002/travelmindai pratyakshsinha172002/travelmindalai:latest
+        docker push pratyakshsinha172002/travelmindalai:latest

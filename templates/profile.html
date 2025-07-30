@@ -1,0 +1,967 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card bg-dark mb-4">
+                <div class="card-body p-4">
+                    <h2 class="mb-4"><i class="fas fa-user-circle me-2"></i>My Profile</h2>
+                    <p class="lead">Manage your account settings and view your travel history.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Profile Overview Card -->
+            <div class="card bg-dark mb-4">
+                <div class="card-body text-center p-4">
+                    <div class="avatar bg-primary text-white rounded-circle mx-auto mb-4" style="width: 100px; height: 100px; font-size: 2.5rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4 id="profile-name">John Doe</h4>
+                    <p class="text-muted mb-3" id="profile-username">@johndoe</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-light" id="edit-profile-btn">
+                            <i class="fas fa-edit me-1"></i>Edit Profile
+                        </button>
+                        <button class="btn btn-outline-danger" id="logout-btn">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Menu -->
+            <div class="card bg-dark mb-4">
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush" id="profile-menu-tabs" role="tablist">
+                        <button class="list-group-item list-group-item-action bg-dark d-flex justify-content-between align-items-center active" id="personal-info-tab" data-bs-toggle="list" data-bs-target="#personal-info" role="tab" aria-controls="personal-info">
+                            <div>
+                                <i class="fas fa-user me-2"></i>Personal Information
+                            </div>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="list-group-item list-group-item-action bg-dark d-flex justify-content-between align-items-center" id="travel-prefs-tab" data-bs-toggle="list" data-bs-target="#travel-prefs" role="tab" aria-controls="travel-prefs">
+                            <div>
+                                <i class="fas fa-heart me-2"></i>Travel Preferences
+                            </div>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="list-group-item list-group-item-action bg-dark d-flex justify-content-between align-items-center" id="security-tab" data-bs-toggle="list" data-bs-target="#security" role="tab" aria-controls="security">
+                            <div>
+                                <i class="fas fa-lock me-2"></i>Security
+                            </div>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="list-group-item list-group-item-action bg-dark d-flex justify-content-between align-items-center" id="bookings-tab" data-bs-toggle="list" data-bs-target="#bookings" role="tab" aria-controls="bookings">
+                            <div>
+                                <i class="fas fa-ticket-alt me-2"></i>My Bookings
+                            </div>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="list-group-item list-group-item-action bg-dark d-flex justify-content-between align-items-center" id="itineraries-tab" data-bs-toggle="list" data-bs-target="#itineraries" role="tab" aria-controls="itineraries">
+                            <div>
+                                <i class="fas fa-map-marked-alt me-2"></i>Saved Itineraries
+                            </div>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Stats -->
+            <div class="card bg-dark mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Travel Stats</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col">
+                            <h3 id="places-visited">0</h3>
+                            <p class="text-muted">Places Visited</p>
+                        </div>
+                        <div class="col">
+                            <h3 id="trips-taken">0</h3>
+                            <p class="text-muted">Trips Taken</p>
+                        </div>
+                        <div class="col">
+                            <h3 id="posts-shared">0</h3>
+                            <p class="text-muted">Posts Shared</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <!-- Tab Content -->
+            <div class="tab-content" id="profile-tab-content">
+                <!-- Personal Information Tab -->
+                <div class="tab-pane fade show active" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Personal Information</h5>
+                            <button class="btn btn-sm btn-outline-light edit-section-btn" data-section="personal">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form id="personal-info-form">
+                                <div class="mb-3">
+                                    <label for="full-name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="full-name" value="John Doe" readonly>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" value="john.doe@example.com" readonly>
+                                    </div>
+                                    <div class="col">
+                                        <label for="phone" class="form-label">Phone</label>
+                                        <input type="tel" class="form-control" id="phone" value="+91 9876543210" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bio" class="form-label">Bio</label>
+                                    <textarea class="form-control" id="bio" rows="3" readonly>Avid traveler and adventure enthusiast. Love exploring new places and cultures.</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="location" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="location" value="Mumbai, India" readonly>
+                                </div>
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-primary save-personal-btn" style="display: none;">
+                                        <i class="fas fa-save me-1"></i>Save Changes
+                                    </button>
+                                    <button type="button" class="btn btn-outline-light cancel-edit-btn" data-section="personal" style="display: none;">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Travel Preferences Tab -->
+                <div class="tab-pane fade" id="travel-prefs" role="tabpanel" aria-labelledby="travel-prefs-tab">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Travel Preferences</h5>
+                            <button class="btn btn-sm btn-outline-light edit-section-btn" data-section="prefs">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form id="travel-prefs-form">
+                                <div class="mb-3">
+                                    <label class="form-label">Travel Interests</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input pref-checkbox" type="checkbox" id="pref-adventure" disabled checked>
+                                                <label class="form-check-label" for="pref-adventure">
+                                                    Adventure & Outdoors
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input pref-checkbox" type="checkbox" id="pref-culture" disabled checked>
+                                                <label class="form-check-label" for="pref-culture">
+                                                    Culture & Heritage
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input pref-checkbox" type="checkbox" id="pref-food" disabled>
+                                                <label class="form-check-label" for="pref-food">
+                                                    Food & Cuisine
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input pref-checkbox" type="checkbox" id="pref-nature" disabled checked>
+                                                <label class="form-check-label" for="pref-nature">
+                                                    Nature & Wildlife
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input pref-checkbox" type="checkbox" id="pref-beach" disabled>
+                                                <label class="form-check-label" for="pref-beach">
+                                                    Beaches & Islands
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input pref-checkbox" type="checkbox" id="pref-city" disabled>
+                                                <label class="form-check-label" for="pref-city">
+                                                    Urban Exploration
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="budget-range" class="form-label">Preferred Budget Range</label>
+                                    <select class="form-select" id="budget-range" disabled>
+                                        <option>Budget (₹1,000 - ₹5,000)</option>
+                                        <option selected>Mid-range (₹5,000 - ₹15,000)</option>
+                                        <option>Luxury (₹15,000+)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="accommodation-pref" class="form-label">Preferred Accommodation</label>
+                                    <select class="form-select" id="accommodation-pref" disabled>
+                                        <option>Hostels</option>
+                                        <option selected>Hotels</option>
+                                        <option>Resorts</option>
+                                        <option>Homestays</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="transport-pref" class="form-label">Preferred Transport</label>
+                                    <select class="form-select" id="transport-pref" disabled>
+                                        <option>Public Transport</option>
+                                        <option selected>Private/Rental</option>
+                                        <option>Flights</option>
+                                        <option>Trains</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-primary save-prefs-btn" style="display: none;">
+                                        <i class="fas fa-save me-1"></i>Save Changes
+                                    </button>
+                                    <button type="button" class="btn btn-outline-light cancel-edit-btn" data-section="prefs" style="display: none;">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Tab -->
+                <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Change Password</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="change-password-form">
+                                <div class="mb-3">
+                                    <label for="current-password" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="current-password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="new-password" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="new-password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirm-password" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirm-password" required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-key me-1"></i>Change Password
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Account Security</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Two-Factor Authentication</label>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="mb-1">Protect your account with 2FA</p>
+                                        <p class="text-muted small mb-0">Currently: <span class="text-danger">Disabled</span></p>
+                                    </div>
+                                    <button class="btn btn-outline-light" id="enable-2fa-btn">
+                                        Enable
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Connected Accounts</label>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <i class="fab fa-google me-2"></i>Google
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-light">Connect</button>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fab fa-facebook me-2"></i>Facebook
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-light">Connect</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header text-danger">
+                            <h5 class="mb-0">Danger Zone</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Delete Account</h6>
+                                    <p class="text-muted small mb-0">This action cannot be undone.</p>
+                                </div>
+                                <button class="btn btn-outline-danger" id="delete-account-btn">
+                                    Delete Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- My Bookings Tab -->
+                <div class="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">My Bookings</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="nav nav-pills nav-fill m-3" id="profile-booking-tabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="profile-upcoming-tab" data-bs-toggle="tab" data-bs-target="#profile-upcoming" type="button" role="tab" aria-controls="profile-upcoming" aria-selected="true">Upcoming</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="profile-past-tab" data-bs-toggle="tab" data-bs-target="#profile-past" type="button" role="tab" aria-controls="profile-past" aria-selected="false">Past</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="profile-cancelled-tab" data-bs-toggle="tab" data-bs-target="#profile-cancelled" type="button" role="tab" aria-controls="profile-cancelled" aria-selected="false">Cancelled</button>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content p-3" id="profile-booking-content">
+                                <div class="tab-pane fade show active" id="profile-upcoming" role="tabpanel" aria-labelledby="profile-upcoming-tab">
+                                    <div id="profile-upcoming-list">
+                                        <div class="text-center py-4 text-muted">
+                                            <i class="fas fa-ticket-alt fa-2x mb-2"></i>
+                                            <p>No upcoming bookings</p>
+                                            <a href="{{ url_for('booking.booking_page') }}" class="btn btn-outline-light btn-sm mt-2">
+                                                <i class="fas fa-plus me-1"></i>Book a Trip
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane fade" id="profile-past" role="tabpanel" aria-labelledby="profile-past-tab">
+                                    <div id="profile-past-list">
+                                        <div class="text-center py-4 text-muted">
+                                            <i class="fas fa-history fa-2x mb-2"></i>
+                                            <p>No past bookings</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane fade" id="profile-cancelled" role="tabpanel" aria-labelledby="profile-cancelled-tab">
+                                    <div id="profile-cancelled-list">
+                                        <div class="text-center py-4 text-muted">
+                                            <i class="fas fa-ban fa-2x mb-2"></i>
+                                            <p>No cancelled bookings</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <a href="{{ url_for('booking.booking_page') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>Book New Trip
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Saved Itineraries Tab -->
+                <div class="tab-pane fade" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Saved Itineraries</h5>
+                            <span class="badge bg-primary" id="itineraries-count">0</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="saved-itineraries-list">
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-route fa-2x mb-2"></i>
+                                    <p>No saved itineraries</p>
+                                    <a href="{{ url_for('itinerary.itinerary_page') }}" class="btn btn-outline-light btn-sm mt-2">
+                                        <i class="fas fa-plus me-1"></i>Create an Itinerary
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <a href="{{ url_for('itinerary.itinerary_page') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>Create New Itinerary
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM elements
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const editSectionBtns = document.querySelectorAll('.edit-section-btn');
+    const cancelEditBtns = document.querySelectorAll('.cancel-edit-btn');
+    const savePersonalBtn = document.querySelector('.save-personal-btn');
+    const savePrefsBtn = document.querySelector('.save-prefs-btn');
+    const changePasswordForm = document.getElementById('change-password-form');
+    const deleteAccountBtn = document.getElementById('delete-account-btn');
+    const enable2faBtn = document.getElementById('enable-2fa-btn');
+    
+    // Check if logged in
+    const isLoggedIn = localStorage.getItem('access_token') !== null;
+    
+    // Function to load profile data
+    function loadProfileData() {
+        if (!isLoggedIn) {
+            // Redirect to login page if not logged in
+            window.location.href = '/auth/login';
+            return;
+        }
+        
+        // Make API request to get user profile
+        fetch('/auth/profile', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                    // Token expired or invalid, redirect to login
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/auth/login';
+                    return;
+                }
+                throw new Error('Failed to fetch profile data');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update profile information
+            document.getElementById('profile-name').textContent = data.full_name || data.username;
+            document.getElementById('profile-username').textContent = '@' + data.username;
+            document.getElementById('full-name').value = data.full_name || '';
+            document.getElementById('email').value = data.email || '';
+            document.getElementById('bio').value = data.bio || '';
+            document.getElementById('location').value = data.location || '';
+            
+            // Update travel preferences if available
+            if (data.preferences) {
+                try {
+                    const preferences = JSON.parse(data.preferences);
+                    
+                    // Update checkboxes
+                    if (preferences.interests) {
+                        document.getElementById('pref-adventure').checked = preferences.interests.includes('adventure');
+                        document.getElementById('pref-culture').checked = preferences.interests.includes('culture');
+                        document.getElementById('pref-food').checked = preferences.interests.includes('food');
+                        document.getElementById('pref-nature').checked = preferences.interests.includes('nature');
+                        document.getElementById('pref-beach').checked = preferences.interests.includes('beach');
+                        document.getElementById('pref-city').checked = preferences.interests.includes('city');
+                    }
+                    
+                    // Update select fields
+                    if (preferences.budget) {
+                        document.getElementById('budget-range').value = preferences.budget;
+                    }
+                    if (preferences.accommodation) {
+                        document.getElementById('accommodation-pref').value = preferences.accommodation;
+                    }
+                    if (preferences.transport) {
+                        document.getElementById('transport-pref').value = preferences.transport;
+                    }
+                } catch (error) {
+                    console.error('Error parsing preferences:', error);
+                }
+            }
+            
+            // Load user stats
+            // In a real app, these would come from the API
+            document.getElementById('places-visited').textContent = '5';
+            document.getElementById('trips-taken').textContent = '8';
+            document.getElementById('posts-shared').textContent = '12';
+            
+            // Load bookings and itineraries
+            loadUserBookings();
+            loadUserItineraries();
+        })
+        .catch(error => {
+            console.error('Error loading profile:', error);
+            alert('Error loading profile data. Please try again later.');
+        });
+    }
+    
+    // Function to update profile
+    function updateProfile(section) {
+        if (!isLoggedIn) {
+            alert('You must be logged in to update your profile.');
+            return;
+        }
+        
+        let data = {};
+        
+        if (section === 'personal') {
+            data = {
+                full_name: document.getElementById('full-name').value,
+                bio: document.getElementById('bio').value,
+                location: document.getElementById('location').value
+            };
+        } else if (section === 'prefs') {
+            // Collect interests
+            const interests = [];
+            if (document.getElementById('pref-adventure').checked) interests.push('adventure');
+            if (document.getElementById('pref-culture').checked) interests.push('culture');
+            if (document.getElementById('pref-food').checked) interests.push('food');
+            if (document.getElementById('pref-nature').checked) interests.push('nature');
+            if (document.getElementById('pref-beach').checked) interests.push('beach');
+            if (document.getElementById('pref-city').checked) interests.push('city');
+            
+            // Create preferences object
+            const preferences = {
+                interests: interests,
+                budget: document.getElementById('budget-range').value,
+                accommodation: document.getElementById('accommodation-pref').value,
+                transport: document.getElementById('transport-pref').value
+            };
+            
+            data = {
+                preferences: JSON.stringify(preferences)
+            };
+        }
+        
+        // Make API request to update profile
+        fetch('/auth/profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update profile');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('Profile updated successfully!');
+            
+            // Update display name if personal info was updated
+            if (section === 'personal') {
+                document.getElementById('profile-name').textContent = data.user.full_name || data.user.username;
+            }
+            
+            // Reset form to non-edit mode
+            toggleEditMode(section, false);
+        })
+        .catch(error => {
+            console.error('Error updating profile:', error);
+            alert('Error updating profile. Please try again later.');
+        });
+    }
+    
+    // Function to toggle edit mode for a form section
+    function toggleEditMode(section, isEdit) {
+        if (section === 'personal') {
+            const inputs = document.querySelectorAll('#personal-info-form input, #personal-info-form textarea');
+            inputs.forEach(input => {
+                input.readOnly = !isEdit;
+            });
+            
+            // Show/hide buttons
+            document.querySelector('.save-personal-btn').style.display = isEdit ? 'inline-block' : 'none';
+            document.querySelector('[data-section="personal"].cancel-edit-btn').style.display = isEdit ? 'inline-block' : 'none';
+            document.querySelector('[data-section="personal"].edit-section-btn').style.display = isEdit ? 'none' : 'inline-block';
+        } else if (section === 'prefs') {
+            const checkboxes = document.querySelectorAll('.pref-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.disabled = !isEdit;
+            });
+            
+            const selects = document.querySelectorAll('#travel-prefs-form select');
+            selects.forEach(select => {
+                select.disabled = !isEdit;
+            });
+            
+            // Show/hide buttons
+            document.querySelector('.save-prefs-btn').style.display = isEdit ? 'inline-block' : 'none';
+            document.querySelector('[data-section="prefs"].cancel-edit-btn').style.display = isEdit ? 'inline-block' : 'none';
+            document.querySelector('[data-section="prefs"].edit-section-btn').style.display = isEdit ? 'none' : 'inline-block';
+        }
+    }
+    
+    // Function to change password
+    function changePassword(event) {
+        event.preventDefault();
+        
+        if (!isLoggedIn) {
+            alert('You must be logged in to change your password.');
+            return;
+        }
+        
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        
+        // Validate passwords
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            alert('Please fill in all password fields.');
+            return;
+        }
+        
+        if (newPassword !== confirmPassword) {
+            alert('New passwords do not match.');
+            return;
+        }
+        
+        // In a real app, this would make an API request to change the password
+        // For demo, just show a success message
+        alert('Password changed successfully!');
+        
+        // Clear the form
+        changePasswordForm.reset();
+    }
+    
+    // Function to delete account
+    function deleteAccount() {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            if (confirm('All your data will be permanently deleted. Are you absolutely sure?')) {
+                // In a real app, this would make an API request to delete the account
+                // For demo, just show a success message and redirect to home
+                alert('Account deleted successfully!');
+                localStorage.removeItem('access_token');
+                window.location.href = '/';
+            }
+        }
+    }
+    
+    // Function to enable 2FA
+    function enable2FA() {
+        // In a real app, this would show a 2FA setup process
+        // For demo, just show a message
+        alert('Two-Factor Authentication setup would be shown here, typically involving QR code scanning with an authenticator app.');
+    }
+    
+    // Function to load user bookings
+    function loadUserBookings() {
+        if (!isLoggedIn) return;
+        
+        // Make API request to get user bookings
+        fetch('/booking/bookings', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch bookings');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Process bookings
+            const upcomingBookings = [];
+            const pastBookings = [];
+            const cancelledBookings = [];
+            
+            const now = new Date();
+            
+            data.bookings.forEach(booking => {
+                const departureDate = new Date(booking.departure_date);
+                
+                if (booking.status === 'cancelled') {
+                    cancelledBookings.push(booking);
+                } else if (departureDate < now) {
+                    pastBookings.push(booking);
+                } else {
+                    upcomingBookings.push(booking);
+                }
+            });
+            
+            // Update booking lists
+            updateBookingsList('profile-upcoming-list', upcomingBookings);
+            updateBookingsList('profile-past-list', pastBookings);
+            updateBookingsList('profile-cancelled-list', cancelledBookings);
+        })
+        .catch(error => {
+            console.error('Error fetching bookings:', error);
+        });
+    }
+    
+    // Function to update bookings list
+    function updateBookingsList(listId, bookings) {
+        const listElement = document.getElementById(listId);
+        
+        if (bookings.length === 0) {
+            // No bookings message
+            if (listId === 'profile-upcoming-list') {
+                listElement.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-ticket-alt fa-2x mb-2"></i>
+                        <p>No upcoming bookings</p>
+                        <a href="{{ url_for('booking.booking_page') }}" class="btn btn-outline-light btn-sm mt-2">
+                            <i class="fas fa-plus me-1"></i>Book a Trip
+                        </a>
+                    </div>
+                `;
+            } else if (listId === 'profile-past-list') {
+                listElement.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-history fa-2x mb-2"></i>
+                        <p>No past bookings</p>
+                    </div>
+                `;
+            } else {
+                listElement.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-ban fa-2x mb-2"></i>
+                        <p>No cancelled bookings</p>
+                    </div>
+                `;
+            }
+            return;
+        }
+        
+        // Create HTML for bookings
+        let html = '';
+        
+        bookings.forEach(booking => {
+            const departureDate = new Date(booking.departure_date);
+            const formattedDate = departureDate.toLocaleDateString('en-IN', { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+            
+            let statusClass = 'success';
+            if (booking.status === 'cancelled') {
+                statusClass = 'danger';
+            } else if (booking.status === 'pending') {
+                statusClass = 'warning';
+            }
+            
+            html += `
+                <div class="booking-item mb-3 p-3 border rounded">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <span class="badge bg-${statusClass} me-2">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span>
+                            <span class="badge bg-secondary">${booking.booking_type.charAt(0).toUpperCase() + booking.booking_type.slice(1)}</span>
+                        </div>
+                        <small class="text-muted">${formattedDate}</small>
+                    </div>
+                    <h6 class="mb-1">${booking.origin} to ${booking.destination}</h6>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="text-muted small">${booking.provider || 'Provider'} • ₹${booking.price}</div>
+                        <a href="{{ url_for('booking.booking_page') }}" class="btn btn-sm btn-outline-light">View</a>
+                    </div>
+                </div>
+            `;
+        });
+        
+        listElement.innerHTML = html;
+    }
+    
+    // Function to load user itineraries
+    function loadUserItineraries() {
+        if (!isLoggedIn) return;
+        
+        // Make API request to get user itineraries
+        fetch('/itinerary/itineraries', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch itineraries');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const itinerariesList = document.getElementById('saved-itineraries-list');
+            const itinerariesCount = document.getElementById('itineraries-count');
+            
+            // Update count
+            itinerariesCount.textContent = data.itineraries.length;
+            
+            if (data.itineraries.length === 0) {
+                itinerariesList.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-route fa-2x mb-2"></i>
+                        <p>No saved itineraries</p>
+                        <a href="{{ url_for('itinerary.itinerary_page') }}" class="btn btn-outline-light btn-sm mt-2">
+                            <i class="fas fa-plus me-1"></i>Create an Itinerary
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create HTML for itineraries
+            let html = '';
+            
+            data.itineraries.forEach(itinerary => {
+                const startDate = itinerary.start_date ? new Date(itinerary.start_date) : null;
+                const endDate = itinerary.end_date ? new Date(itinerary.end_date) : null;
+                
+                let dateDisplay = 'No dates specified';
+                if (startDate && endDate) {
+                    const startFormatted = startDate.toLocaleDateString('en-IN', { 
+                        day: 'numeric', 
+                        month: 'short'
+                    });
+                    const endFormatted = endDate.toLocaleDateString('en-IN', { 
+                        day: 'numeric', 
+                        month: 'short', 
+                        year: 'numeric' 
+                    });
+                    dateDisplay = `${startFormatted} - ${endFormatted}`;
+                } else if (startDate) {
+                    dateDisplay = startDate.toLocaleDateString('en-IN', { 
+                        day: 'numeric', 
+                        month: 'short', 
+                        year: 'numeric' 
+                    });
+                }
+                
+                html += `
+                    <div class="itinerary-item p-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="mb-0">${itinerary.title}</h6>
+                            <span class="badge bg-primary">₹${itinerary.budget}</span>
+                        </div>
+                        <div class="mb-2">
+                            <i class="fas fa-map-marker-alt me-1 text-muted"></i>
+                            <span class="text-muted">${itinerary.location}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">${dateDisplay}</small>
+                            <a href="{{ url_for('itinerary.itinerary_page') }}" class="btn btn-sm btn-outline-light">View</a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            itinerariesList.innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error fetching itineraries:', error);
+            document.getElementById('saved-itineraries-list').innerHTML = `
+                <div class="alert alert-danger m-3">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Error fetching itineraries. Please try again later.
+                </div>
+            `;
+        });
+    }
+    
+    // Function to logout
+    function logout() {
+        // Remove token from storage
+        localStorage.removeItem('access_token');
+        
+        // Redirect to login page
+        window.location.href = '/auth/login';
+    }
+    
+    // Event Listeners
+    
+    // Edit profile button
+    editProfileBtn.addEventListener('click', function() {
+        // Switch to personal info tab and enable edit mode
+        document.getElementById('personal-info-tab').click();
+        toggleEditMode('personal', true);
+    });
+    
+    // Logout button
+    logoutBtn.addEventListener('click', logout);
+    
+    // Edit section buttons
+    editSectionBtns.forEach(button => {
+        button.addEventListener('click', function() {
+            const section = this.dataset.section;
+            toggleEditMode(section, true);
+        });
+    });
+    
+    // Cancel edit buttons
+    cancelEditBtns.forEach(button => {
+        button.addEventListener('click', function() {
+            const section = this.dataset.section;
+            toggleEditMode(section, false);
+            
+            // Reset form to original values
+            if (section === 'personal') {
+                loadProfileData();
+            }
+        });
+    });
+    
+    // Save personal info button
+    savePersonalBtn.addEventListener('click', function() {
+        updateProfile('personal');
+    });
+    
+    // Save preferences button
+    savePrefsBtn.addEventListener('click', function() {
+        updateProfile('prefs');
+    });
+    
+    // Change password form
+    changePasswordForm.addEventListener('submit', changePassword);
+    
+    // Delete account button
+    deleteAccountBtn.addEventListener('click', deleteAccount);
+    
+    // Enable 2FA button
+    enable2faBtn.addEventListener('click', enable2FA);
+    
+    // Load profile data on page load
+    loadProfileData();
+});
+</script>
+
+<style>
+/* Avatar styling */
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Itinerary items styling */
+.itinerary-item:last-child {
+    border-bottom: none !important;
+}
+</style>
+{% endblock %}

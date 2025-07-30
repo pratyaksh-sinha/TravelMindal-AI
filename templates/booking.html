@@ -1,0 +1,1100 @@
+{% extends 'base.html' %}
+
+{% block title %}Bookings{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card bg-dark mb-4">
+                <div class="card-body p-4">
+                    <h2 class="mb-4"><i class="fas fa-ticket-alt me-2"></i>Travel Bookings</h2>
+                    <p class="lead">Search, book, and manage your flights, trains, buses, and hotels all in one place!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Booking Search Form -->
+            <div class="card bg-dark mb-4">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="booking-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="flight-tab" data-bs-toggle="tab" data-bs-target="#flight" type="button" role="tab" aria-controls="flight" aria-selected="true">
+                                <i class="fas fa-plane me-1"></i>Flights
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="train-tab" data-bs-toggle="tab" data-bs-target="#train" type="button" role="tab" aria-controls="train" aria-selected="false">
+                                <i class="fas fa-train me-1"></i>Trains
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="bus-tab" data-bs-toggle="tab" data-bs-target="#bus" type="button" role="tab" aria-controls="bus" aria-selected="false">
+                                <i class="fas fa-bus me-1"></i>Buses
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card-body">
+                    <div class="tab-content" id="booking-tabs-content">
+                        <!-- Flight Booking Form -->
+                        <div class="tab-pane fade show active" id="flight" role="tabpanel" aria-labelledby="flight-tab">
+                            <form id="flight-search-form">
+                                <input type="hidden" name="booking_type" value="flight">
+                                
+                                <div class="mb-3">
+                                    <label for="flight-origin" class="form-label">From</label>
+                                    <input type="text" class="form-control" id="flight-origin" name="origin" placeholder="City or Airport" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="flight-destination" class="form-label">To</label>
+                                    <input type="text" class="form-control" id="flight-destination" name="destination" placeholder="City or Airport" required>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label for="flight-departure" class="form-label">Departure</label>
+                                        <input type="date" class="form-control" id="flight-departure" name="departure_date" required>
+                                    </div>
+                                    <div class="col">
+                                        <label for="flight-return" class="form-label">Return (Optional)</label>
+                                        <input type="date" class="form-control" id="flight-return" name="return_date">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="flight-passengers" class="form-label">Passengers</label>
+                                    <input type="number" class="form-control" id="flight-passengers" name="passengers" min="1" value="1">
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search me-1"></i>Search Flights
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Train Booking Form -->
+                        <div class="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">
+                            <form id="train-search-form">
+                                <input type="hidden" name="booking_type" value="train">
+                                
+                                <div class="mb-3">
+                                    <label for="train-origin" class="form-label">From</label>
+                                    <input type="text" class="form-control" id="train-origin" name="origin" placeholder="City or Station" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="train-destination" class="form-label">To</label>
+                                    <input type="text" class="form-control" id="train-destination" name="destination" placeholder="City or Station" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="train-departure" class="form-label">Date of Journey</label>
+                                    <input type="date" class="form-control" id="train-departure" name="departure_date" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="train-class" class="form-label">Class</label>
+                                    <select class="form-select" id="train-class" name="class">
+                                        <option value="SL">Sleeper</option>
+                                        <option value="3A">AC 3 Tier</option>
+                                        <option value="2A">AC 2 Tier</option>
+                                        <option value="1A">AC First Class</option>
+                                        <option value="CC">Chair Car</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search me-1"></i>Search Trains
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Bus Booking Form -->
+                        <div class="tab-pane fade" id="bus" role="tabpanel" aria-labelledby="bus-tab">
+                            <form id="bus-search-form">
+                                <input type="hidden" name="booking_type" value="bus">
+                                
+                                <div class="mb-3">
+                                    <label for="bus-origin" class="form-label">From</label>
+                                    <input type="text" class="form-control" id="bus-origin" name="origin" placeholder="City or Bus Station" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="bus-destination" class="form-label">To</label>
+                                    <input type="text" class="form-control" id="bus-destination" name="destination" placeholder="City or Bus Station" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="bus-departure" class="form-label">Date of Journey</label>
+                                    <input type="date" class="form-control" id="bus-departure" name="departure_date" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="bus-passengers" class="form-label">Passengers</label>
+                                    <input type="number" class="form-control" id="bus-passengers" name="passengers" min="1" value="1">
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search me-1"></i>Search Buses
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Bookings -->
+            <div class="card bg-dark mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-list me-2"></i>My Bookings</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="nav nav-pills nav-fill m-3" id="booking-filter-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab" aria-controls="upcoming" aria-selected="true">Upcoming</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button" role="tab" aria-controls="past" aria-selected="false">Past</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab" data-bs-target="#cancelled" type="button" role="tab" aria-controls="cancelled" aria-selected="false">Cancelled</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content p-3" id="booking-filter-content">
+                        <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+                            <div id="upcoming-bookings-list">
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-ticket-alt fa-2x mb-2"></i>
+                                    <p>No upcoming bookings</p>
+                                    <small>Your upcoming bookings will appear here</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="past" role="tabpanel" aria-labelledby="past-tab">
+                            <div id="past-bookings-list">
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-history fa-2x mb-2"></i>
+                                    <p>No past bookings</p>
+                                    <small>Your travel history will appear here</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+                            <div id="cancelled-bookings-list">
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-ban fa-2x mb-2"></i>
+                                    <p>No cancelled bookings</p>
+                                    <small>Your cancelled bookings will appear here</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <!-- Search Results -->
+            <div class="card bg-dark mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0" id="search-results-title">Search Results</h5>
+                    <div id="results-count"></div>
+                </div>
+                <div class="card-body p-0">
+                    <div id="search-results">
+                        <div class="text-center py-5">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTYwIDEwYzI3LjYxNCAwIDUwIDIyLjM4NiA1MCA1MHMtMjIuMzg2IDUwLTUwIDUwLTUwLTIyLjM4Ni01MC01MCAyMi4zODYtNTAgNTAtNTB6bTIwLjY5MiAyMS4yMzZhMy4zMzQgMy4zMzQgMCAwMC0yLjM1Ny0uOTc2aC0zNi42N2EzLjMzNCAzLjMzNCAwIDAwLTMuMzMzIDMuMzMzdjEwaDEwdi0zLjMzM2gyMy4zMzN2M2wtMTYuNjY3IDE1LTYuNjY2LTZMNDAgNTAuMjYgNTQuMTY3IDYzLjVsMTYuNjY2LTE1djExLjVoMTB2LTE4LjRsMTAuMzMzLTkuM3YyNC4zNjdoMTBWMzMuNTkzYTMuMzM0IDMuMzM0IDAgMDAtLjk3NC0yLjM1N3oiIGZpbGw9IiM4MDgwODAiLz4KPC9zdmc+Cg==" alt="Search" class="mb-3">
+                            <h4 class="text-muted">Search for transportation options</h4>
+                            <p class="text-muted">Fill out the search form to find flights, trains, or buses for your journey.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Booking Details -->
+            <div class="card bg-dark mb-4" id="booking-details-card" style="display: none;">
+                <div class="card-header">
+                    <h5 class="mb-0">Booking Details</h5>
+                </div>
+                <div class="card-body" id="booking-details-content">
+                    <!-- Booking details will be shown here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Confirmation Modal -->
+<div class="modal fade" id="booking-confirmation-modal" tabindex="-1" aria-labelledby="booking-confirmation-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h5 class="modal-title" id="booking-confirmation-modal-label">Confirm Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="booking-confirmation-content">
+                <!-- Confirmation details will be shown here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirm-booking-btn">
+                    <i class="fas fa-check me-1"></i>Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="booking-loading-overlay" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75" style="display: none !important; z-index: 9999;">
+    <div class="text-center">
+        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5 class="text-white">Searching for options...</h5>
+        <p class="text-white-50">This may take a few moments</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM elements
+    const flightSearchForm = document.getElementById('flight-search-form');
+    const trainSearchForm = document.getElementById('train-search-form');
+    const busSearchForm = document.getElementById('bus-search-form');
+    const searchResults = document.getElementById('search-results');
+    const searchResultsTitle = document.getElementById('search-results-title');
+    const resultsCount = document.getElementById('results-count');
+    const bookingDetailsCard = document.getElementById('booking-details-card');
+    const bookingDetailsContent = document.getElementById('booking-details-content');
+    const loadingOverlay = document.getElementById('booking-loading-overlay');
+    const bookingConfirmationModal = new bootstrap.Modal(document.getElementById('booking-confirmation-modal'));
+    const bookingConfirmationContent = document.getElementById('booking-confirmation-content');
+    const confirmBookingBtn = document.getElementById('confirm-booking-btn');
+    
+    // Set min date to today for all date inputs
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('input[type="date"]').forEach(input => {
+        input.min = today;
+        
+        // Set default value to today
+        if (input.id.includes('departure')) {
+            input.value = today;
+        }
+    });
+    
+    // Function to show loading overlay
+    function showLoading() {
+        loadingOverlay.style.display = 'flex';
+    }
+    
+    // Function to hide loading overlay
+    function hideLoading() {
+        loadingOverlay.style.display = 'none';
+    }
+    
+    // Function to format date
+    function formatDate(dateString) {
+        const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-IN', options);
+    }
+    
+    // Function to format time
+    function formatTime(dateString) {
+        const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('en-IN', options);
+    }
+    
+    // Function to calculate duration between two dates
+    function calculateDuration(startDate, endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const diff = Math.abs(end - start);
+        
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        return `${hours}h ${minutes}m`;
+    }
+    
+    // Function to search for transport options
+    function searchTransport(event) {
+        event.preventDefault();
+        
+        // Hide booking details if visible
+        bookingDetailsCard.style.display = 'none';
+        
+        // Get form data
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Show loading overlay
+        showLoading();
+        
+        // Format dates properly for API
+        if (data.departure_date) {
+            data.departure_date = `${data.departure_date}T12:00:00`;
+        }
+        if (data.return_date) {
+            data.return_date = `${data.return_date}T12:00:00`;
+        }
+        
+        // Make API request
+        fetch('/booking/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading overlay
+            hideLoading();
+            
+            // Check for error
+            if (data.error) {
+                searchResults.innerHTML = `
+                    <div class="alert alert-danger m-3">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        ${data.error}
+                    </div>
+                `;
+                resultsCount.textContent = '';
+                return;
+            }
+            
+            // Update search results title
+            const transportType = formData.get('booking_type');
+            const origin = formData.get('origin');
+            const destination = formData.get('destination');
+            searchResultsTitle.textContent = `${transportType.charAt(0).toUpperCase() + transportType.slice(1)}s: ${origin} to ${destination}`;
+            
+            // Update results count
+            resultsCount.textContent = `${data.results.length} results found`;
+            
+            // Create HTML for results
+            let html = '';
+            
+            if (data.results.length === 0) {
+                html = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">No results found</h4>
+                        <p class="text-muted">Try adjusting your search criteria.</p>
+                    </div>
+                `;
+            } else {
+                data.results.forEach((result, index) => {
+                    html += `
+                        <div class="transport-option p-3 border-bottom">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="provider mb-2">
+                                        <h5 class="mb-0">${result.provider}</h5>
+                                        <small class="text-muted">${result.booking_type.toUpperCase()}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="journey-details d-flex align-items-center justify-content-between">
+                                        <div class="departure text-center">
+                                            <h5 class="mb-0">${formatTime(result.departure_time)}</h5>
+                                            <small class="text-muted">${formatDate(result.departure_time)}</small>
+                                            <div>${result.origin}</div>
+                                        </div>
+                                        <div class="duration text-center px-2">
+                                            <div class="time-bar position-relative">
+                                                <div class="line"></div>
+                                                <div class="text-muted small">${calculateDuration(result.departure_time, result.arrival_time)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="arrival text-center">
+                                            <h5 class="mb-0">${formatTime(result.arrival_time)}</h5>
+                                            <small class="text-muted">${formatDate(result.arrival_time)}</small>
+                                            <div>${result.destination}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="price-container text-center">
+                                        <h5 class="mb-1">₹${result.price}</h5>
+                                        <span class="badge bg-success mb-2">${result.available_seats} seats left</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="d-grid">
+                                        <button class="btn btn-primary book-btn" data-result-index="${index}">
+                                            <i class="fas fa-ticket-alt me-1"></i>Book
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Update search results
+            searchResults.innerHTML = html;
+            
+            // Add event listeners to book buttons
+            document.querySelectorAll('.book-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.resultIndex);
+                    const selectedOption = data.results[index];
+                    showBookingConfirmation(selectedOption);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            hideLoading();
+            searchResults.innerHTML = `
+                <div class="alert alert-danger m-3">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    An error occurred while searching. Please try again later.
+                </div>
+            `;
+            resultsCount.textContent = '';
+        });
+    }
+    
+    // Function to show booking confirmation
+    function showBookingConfirmation(option) {
+        // Populate confirmation content
+        bookingConfirmationContent.innerHTML = `
+            <div class="booking-summary mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">${option.booking_type.charAt(0).toUpperCase() + option.booking_type.slice(1)} Details</h5>
+                    <span class="badge bg-primary">${option.provider}</span>
+                </div>
+                
+                <div class="journey-card p-3 bg-dark border rounded mb-3">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="departure">
+                            <h6 class="mb-1">Departure</h6>
+                            <h5 class="mb-0">${formatTime(option.departure_time)}</h5>
+                            <div class="text-muted">${formatDate(option.departure_time)}</div>
+                            <div>${option.origin}</div>
+                        </div>
+                        <div class="arrival text-end">
+                            <h6 class="mb-1">Arrival</h6>
+                            <h5 class="mb-0">${formatTime(option.arrival_time)}</h5>
+                            <div class="text-muted">${formatDate(option.arrival_time)}</div>
+                            <div>${option.destination}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between pt-2 border-top">
+                        <div>Duration: ${calculateDuration(option.departure_time, option.arrival_time)}</div>
+                        <div>${option.available_seats} seats available</div>
+                    </div>
+                </div>
+                
+                <div class="passenger-details">
+                    <h5 class="mb-3">Passenger Details</h5>
+                    <div class="mb-3">
+                        <label for="passenger-name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="passenger-name" placeholder="Enter passenger name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passenger-email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="passenger-email" placeholder="Enter email address" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passenger-phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="passenger-phone" placeholder="Enter phone number" required>
+                    </div>
+                </div>
+                
+                <div class="fare-summary mt-4">
+                    <h5 class="mb-3">Fare Summary</h5>
+                    <div class="p-3 bg-dark border rounded">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>Base Fare</div>
+                            <div>₹${option.price - 250}</div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>Taxes & Fees</div>
+                            <div>₹250</div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold">
+                            <div>Total Amount</div>
+                            <div>₹${option.price}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Store the selected option for booking
+        confirmBookingBtn.dataset.option = JSON.stringify(option);
+        
+        // Show the confirmation modal
+        bookingConfirmationModal.show();
+    }
+    
+    // Function to confirm booking
+    function confirmBooking() {
+        // Get the selected option
+        const option = JSON.parse(confirmBookingBtn.dataset.option);
+        
+        // Get passenger details
+        const passengerName = document.getElementById('passenger-name').value;
+        const passengerEmail = document.getElementById('passenger-email').value;
+        const passengerPhone = document.getElementById('passenger-phone').value;
+        
+        // Validate inputs
+        if (!passengerName || !passengerEmail || !passengerPhone) {
+            alert('Please fill in all passenger details');
+            return;
+        }
+        
+        // Disable the confirm button
+        confirmBookingBtn.disabled = true;
+        confirmBookingBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+        
+        // Prepare booking data
+        const bookingData = {
+            booking_type: option.booking_type,
+            provider: option.provider,
+            origin: option.origin,
+            destination: option.destination,
+            departure_date: option.departure_time,
+            return_date: null,  // Set if it's a round trip
+            price: option.price
+        };
+        
+        // Make API request to create booking
+        fetch('/booking/bookings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token') // If using token-based auth
+            },
+            body: JSON.stringify(bookingData),
+        })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                    // Handle unauthorized (not logged in)
+                    throw new Error('You must be logged in to book. Please login and try again.');
+                }
+                return response.json().then(data => {
+                    throw new Error(data.error || 'An error occurred while creating the booking');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Hide the confirmation modal
+            bookingConfirmationModal.hide();
+            
+            // Reset the confirm button
+            confirmBookingBtn.disabled = false;
+            confirmBookingBtn.innerHTML = '<i class="fas fa-check me-1"></i>Confirm Booking';
+            
+            // Show booking details
+            showBookingSuccess(data.booking);
+            
+            // Refresh the bookings list
+            fetchUserBookings();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            
+            // Reset the confirm button
+            confirmBookingBtn.disabled = false;
+            confirmBookingBtn.innerHTML = '<i class="fas fa-check me-1"></i>Confirm Booking';
+            
+            // Show error message
+            alert(error.message || 'An error occurred while processing your booking. Please try again later.');
+        });
+    }
+    
+    // Function to show booking success
+    function showBookingSuccess(booking) {
+        // Show the booking details card
+        bookingDetailsCard.style.display = 'block';
+        
+        // Populate the details
+        bookingDetailsContent.innerHTML = `
+            <div class="text-center mb-4">
+                <div class="success-icon mb-3">
+                    <i class="fas fa-check-circle text-success fa-4x"></i>
+                </div>
+                <h4>Booking Confirmed!</h4>
+                <p class="text-muted">Your booking has been successfully processed.</p>
+                <div class="d-inline-block bg-light text-dark px-4 py-2 rounded">
+                    <h5 class="mb-0">Booking Reference: ${booking.booking_ref}</h5>
+                </div>
+            </div>
+            
+            <div class="booking-details mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card bg-dark border mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">Journey Details</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <div class="text-muted small">From</div>
+                                    <div class="fw-bold">${booking.origin}</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="text-muted small">To</div>
+                                    <div class="fw-bold">${booking.destination}</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="text-muted small">Departure Date</div>
+                                    <div class="fw-bold">${formatDate(booking.departure_date)}</div>
+                                </div>
+                                <div>
+                                    <div class="text-muted small">Booking Type</div>
+                                    <div class="fw-bold">${booking.booking_type.charAt(0).toUpperCase() + booking.booking_type.slice(1)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-dark border mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">Payment Details</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <div class="text-muted small">Amount Paid</div>
+                                    <div class="fw-bold">₹${booking.price}</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="text-muted small">Payment Method</div>
+                                    <div class="fw-bold">Credit Card</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="text-muted small">Status</div>
+                                    <div class="fw-bold text-success">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</div>
+                                </div>
+                                <div>
+                                    <div class="text-muted small">Booked On</div>
+                                    <div class="fw-bold">${formatDate(booking.created_at)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mb-3">
+                <p class="text-muted">A copy of the booking confirmation has been sent to your email.</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-outline-light" id="download-ticket-btn">
+                        <i class="fas fa-download me-1"></i>Download Ticket
+                    </button>
+                    <button class="btn btn-outline-light" id="email-ticket-btn">
+                        <i class="fas fa-envelope me-1"></i>Email Ticket
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // Add event listeners for the buttons
+        document.getElementById('download-ticket-btn').addEventListener('click', function() {
+            alert('Ticket download functionality would be implemented here.');
+        });
+        
+        document.getElementById('email-ticket-btn').addEventListener('click', function() {
+            alert('Email ticket functionality would be implemented here.');
+        });
+    }
+    
+    // Function to fetch user bookings
+    function fetchUserBookings() {
+        // Check if user is logged in (has token)
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            // User is not logged in, show message
+            ['upcoming-bookings-list', 'past-bookings-list', 'cancelled-bookings-list'].forEach(id => {
+                document.getElementById(id).innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-lock fa-2x mb-2 text-muted"></i>
+                        <p>Please <a href="/auth/login">login</a> to view your bookings</p>
+                    </div>
+                `;
+            });
+            return;
+        }
+        
+        // Make API request to get user bookings
+        fetch('/booking/bookings', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch bookings');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Process bookings
+            const upcomingBookings = [];
+            const pastBookings = [];
+            const cancelledBookings = [];
+            
+            const now = new Date();
+            
+            data.bookings.forEach(booking => {
+                const departureDate = new Date(booking.departure_date);
+                
+                if (booking.status === 'cancelled') {
+                    cancelledBookings.push(booking);
+                } else if (departureDate < now) {
+                    pastBookings.push(booking);
+                } else {
+                    upcomingBookings.push(booking);
+                }
+            });
+            
+            // Update upcoming bookings list
+            updateBookingsList('upcoming-bookings-list', upcomingBookings);
+            
+            // Update past bookings list
+            updateBookingsList('past-bookings-list', pastBookings);
+            
+            // Update cancelled bookings list
+            updateBookingsList('cancelled-bookings-list', cancelledBookings);
+        })
+        .catch(error => {
+            console.error('Error fetching bookings:', error);
+            ['upcoming-bookings-list', 'past-bookings-list', 'cancelled-bookings-list'].forEach(id => {
+                document.getElementById(id).innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Error fetching bookings. Please try again later.
+                    </div>
+                `;
+            });
+        });
+    }
+    
+    // Function to update bookings list
+    function updateBookingsList(listId, bookings) {
+        const listElement = document.getElementById(listId);
+        
+        if (bookings.length === 0) {
+            // No bookings message
+            if (listId === 'upcoming-bookings-list') {
+                listElement.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-ticket-alt fa-2x mb-2"></i>
+                        <p>No upcoming bookings</p>
+                        <small>Your upcoming bookings will appear here</small>
+                    </div>
+                `;
+            } else if (listId === 'past-bookings-list') {
+                listElement.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-history fa-2x mb-2"></i>
+                        <p>No past bookings</p>
+                        <small>Your travel history will appear here</small>
+                    </div>
+                `;
+            } else {
+                listElement.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-ban fa-2x mb-2"></i>
+                        <p>No cancelled bookings</p>
+                        <small>Your cancelled bookings will appear here</small>
+                    </div>
+                `;
+            }
+            return;
+        }
+        
+        // Create HTML for bookings
+        let html = '';
+        
+        bookings.forEach(booking => {
+            let statusClass = 'success';
+            if (booking.status === 'cancelled') {
+                statusClass = 'danger';
+            } else if (booking.status === 'pending') {
+                statusClass = 'warning';
+            }
+            
+            html += `
+                <div class="booking-item mb-2 p-2 border rounded">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <span class="badge bg-${statusClass} me-2">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span>
+                            <span class="badge bg-secondary">${booking.booking_type.charAt(0).toUpperCase() + booking.booking_type.slice(1)}</span>
+                        </div>
+                        <small class="text-muted">${formatDate(booking.departure_date)}</small>
+                    </div>
+                    <div class="route mb-2">
+                        <h6 class="mb-0">${booking.origin} to ${booking.destination}</h6>
+                        <small class="text-muted">${booking.provider || 'Provider'}</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="price">₹${booking.price}</div>
+                        <button class="btn btn-sm btn-outline-light view-booking-btn" data-booking-id="${booking.id}">
+                            <i class="fas fa-eye me-1"></i>View
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        listElement.innerHTML = html;
+        
+        // Add event listeners to view booking buttons
+        listElement.querySelectorAll('.view-booking-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const bookingId = this.dataset.bookingId;
+                viewBookingDetails(bookingId);
+            });
+        });
+    }
+    
+    // Function to view booking details
+    function viewBookingDetails(bookingId) {
+        // Make API request to get booking details
+        fetch(`/booking/bookings/${bookingId}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch booking details');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const booking = data.booking;
+            
+            // Show the booking details card
+            bookingDetailsCard.style.display = 'block';
+            
+            // Scroll to the details card
+            bookingDetailsCard.scrollIntoView({ behavior: 'smooth' });
+            
+            // Populate the details
+            bookingDetailsContent.innerHTML = `
+                <div class="booking-header mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4>Booking #${booking.booking_ref}</h4>
+                        <span class="badge bg-${booking.status === 'confirmed' ? 'success' : booking.status === 'cancelled' ? 'danger' : 'warning'} fs-6">
+                            ${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                        </span>
+                    </div>
+                    <p class="text-muted">Booked on ${formatDate(booking.created_at)}</p>
+                </div>
+                
+                <div class="booking-details mb-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-dark border mb-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Journey Details</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <div class="text-muted small">From</div>
+                                        <div class="fw-bold">${booking.origin}</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">To</div>
+                                        <div class="fw-bold">${booking.destination}</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Departure Date</div>
+                                        <div class="fw-bold">${formatDate(booking.departure_date)}</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Booking Type</div>
+                                        <div class="fw-bold">${booking.booking_type.charAt(0).toUpperCase() + booking.booking_type.slice(1)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-dark border mb-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Provider Details</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Provider</div>
+                                        <div class="fw-bold">${booking.provider || 'Not specified'}</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Price</div>
+                                        <div class="fw-bold">₹${booking.price}</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Booking Reference</div>
+                                        <div class="fw-bold">${booking.booking_ref}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="booking-actions text-center">
+                    ${booking.status === 'confirmed' ? `
+                        <button class="btn btn-danger me-2" id="cancel-booking-btn" data-booking-id="${booking.id}">
+                            <i class="fas fa-times me-1"></i>Cancel Booking
+                        </button>
+                    ` : ''}
+                    <button class="btn btn-outline-light me-2" id="booking-download-ticket-btn">
+                        <i class="fas fa-download me-1"></i>Download Ticket
+                    </button>
+                    <button class="btn btn-outline-light" id="booking-email-ticket-btn">
+                        <i class="fas fa-envelope me-1"></i>Email Ticket
+                    </button>
+                </div>
+            `;
+            
+            // Add event listeners for the buttons
+            const cancelBtn = document.getElementById('cancel-booking-btn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    cancelBooking(this.dataset.bookingId);
+                });
+            }
+            
+            document.getElementById('booking-download-ticket-btn').addEventListener('click', function() {
+                alert('Ticket download functionality would be implemented here.');
+            });
+            
+            document.getElementById('booking-email-ticket-btn').addEventListener('click', function() {
+                alert('Email ticket functionality would be implemented here.');
+            });
+        })
+        .catch(error => {
+            console.error('Error viewing booking details:', error);
+            bookingDetailsCard.style.display = 'block';
+            bookingDetailsContent.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Error fetching booking details. Please try again later.
+                </div>
+            `;
+        });
+    }
+    
+    // Function to cancel booking
+    function cancelBooking(bookingId) {
+        if (!confirm('Are you sure you want to cancel this booking?')) {
+            return;
+        }
+        
+        // Make API request to cancel booking
+        fetch(`/booking/bookings/${bookingId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to cancel booking');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('Booking cancelled successfully');
+            
+            // Refresh the bookings list
+            fetchUserBookings();
+            
+            // Update the booking details to show cancelled status
+            viewBookingDetails(bookingId);
+        })
+        .catch(error => {
+            console.error('Error cancelling booking:', error);
+            alert('Error cancelling booking. Please try again later.');
+        });
+    }
+    
+    // Event Listeners
+    flightSearchForm.addEventListener('submit', searchTransport);
+    trainSearchForm.addEventListener('submit', searchTransport);
+    busSearchForm.addEventListener('submit', searchTransport);
+    confirmBookingBtn.addEventListener('click', confirmBooking);
+    
+    // Initialize - fetch user bookings if logged in
+    fetchUserBookings();
+});
+</script>
+
+<style>
+/* Timeline for journey */
+.time-bar {
+    width: 80px;
+    text-align: center;
+}
+
+.time-bar .line {
+    height: 2px;
+    background-color: var(--bs-secondary);
+    margin: 10px 0;
+    position: relative;
+}
+
+.time-bar .line:before,
+.time-bar .line:after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: var(--bs-secondary);
+    border-radius: 50%;
+    top: -2px;
+}
+
+.time-bar .line:before {
+    left: 0;
+}
+
+.time-bar .line:after {
+    right: 0;
+}
+
+/* Success icon styles */
+.success-icon {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgba(25, 135, 84, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+{% endblock %}
